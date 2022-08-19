@@ -1,16 +1,12 @@
 pragma solidity 0.8.14;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "./IStarknetCore.sol";
 
-contract Stake is Ownable {
+contract Stake {
 
     /////////////////
     /// Constants ///
     /////////////////
-
-    // Used to check l2 address range
-    uint256 constant FIELD_PRIME = 0x800000000000011000000000000000000000000000000000000000000000001;
 
     // The selector of the "deposit" l1_handler.
     uint256 constant DEPOSIT_SELECTOR = 352040181584456735608515580760888541466059565068553383579463728554843487745;
@@ -50,20 +46,17 @@ contract Stake is Ownable {
     //////////////////////////
 
     /// @dev function to deposit ETH to Stake contract
-    /// @param userL2Address_ - User's L2 Account address
-    function depositEthToL1(uint256 userL2Address_)
+    function stake()
         external
         payable
     {
-        require(msg.value > 0, "Deposit failed: no value provided");
-        require(isValidFelt(userL2Address_));
+        require(msg.value > 100000000000000, "Deposit failed: minimum stake value is 0.001 ETH");
 
         uint256 senderAsUint256 = uint256(uint160(msg.sender));
 
-        uint256[] memory payload = new uint256[](3);
+        uint256[] memory payload = new uint256[](2);
         payload[0] = senderAsUint256;
-        payload[1] = userL2Address_;
-        payload[2] = msg.value;
+        payload[1] = msg.value;
 
         starknetCore.sendMessageToL2(
             stakeL2Address,
@@ -74,7 +67,7 @@ contract Stake is Ownable {
 
     /// @dev function to withdraw funds from an L2 Account contract
     /// @param amount_ - The amount of tokens to be withdrawn
-    function withdrawEth(
+    function withdraw(
         uint256 amount_
     ) external {
         uint256 senderAsUint256 = uint256(uint160(msg.sender));
@@ -91,16 +84,5 @@ contract Stake is Ownable {
         );
 
         payable(msg.sender).transfer(amount_);
-    }
-
-    /////////////////////////
-    /// Private functions ///
-    /////////////////////////
-
-    /// @dev Checks if value is a valid Cairo felt
-    /// @param value_ - Value to be checked
-    /// @return isValid - Validation result
-    function isValidFelt(uint256 value_) private pure returns (bool isValid) {
-        return value_ != 0 && value_ < FIELD_PRIME;
     }
 }

@@ -2,22 +2,7 @@
     {
         "inputs": [
             {
-                "name": "admin_address_",
-                "type": "felt"
-            }
-        ],
-        "name": "constructor",
-        "outputs": [],
-        "type": "constructor"
-    },
-    {
-        "inputs": [
-            {
                 "name": "user_l1_address_",
-                "type": "felt"
-            },
-            {
-                "name": "user_l2_address_",
                 "type": "felt"
             }
         ],
@@ -54,10 +39,6 @@
                 "type": "felt"
             },
             {
-                "name": "user_l2_address_",
-                "type": "felt"
-            },
-            {
                 "name": "amount_",
                 "type": "felt"
             }
@@ -89,6 +70,17 @@
             }
         ],
         "name": "withdraw",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "user_l1_address_",
+                "type": "felt"
+            }
+        ],
+        "name": "take_fee",
         "outputs": [],
         "type": "function"
     }
