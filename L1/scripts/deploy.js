@@ -13,7 +13,7 @@ async function main() {
   //Passing Starknet core contract address and Stake L2 address
   const stake = await Stake.deploy(
     "0xde29d060D45901Fb19ED6C6e959EB22d8626708e",
-    "0x03be0a73017ce6eed4fc2202d9ee283d0c3ee3fa8eb675b16614a13f413b1df5"
+    "0x02d79ddcd27976e060fd499a05a24ae39e7d23c71a62c4e73bec32efcb8c663f"
   );
   console.log("Stake smart contract address:", stake.address);
 
