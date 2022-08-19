@@ -1,31 +1,36 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
-const hre = require("hardhat");
+const fs = require("fs");
+const { ethers } = require("hardhat");
+const { artifacts } = require("hardhat");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
+  const [deployer] = await ethers.getSigners();
 
-  const lockedAmount = hre.ethers.utils.parseEther("1");
+  console.log("Deploying contracts with the account:", deployer.address);
 
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+  console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  await lock.deployed();
-
-  console.log(
-    `Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
+  const Stake = await ethers.getContractFactory("Stake");
+  //Passing Starknet core contract address and Stake L2 address
+  const stake = await Stake.deploy(
+    "0xde29d060D45901Fb19ED6C6e959EB22d8626708e",
+    "0x03be0a73017ce6eed4fc2202d9ee283d0c3ee3fa8eb675b16614a13f413b1df5"
   );
+  console.log("Stake smart contract address:", stake.address);
+
+  const data_stake = {
+    address: stake.address,
+    abi: JSON.parse(stake.interface.format("json")),
+  };
+
+  if (!fs.existsSync("artifacts/ABI")) fs.mkdirSync("artifacts/ABI");
+  fs.writeFileSync("artifacts/ABI/Stake.json", JSON.stringify(data_stake), {
+    flag: "w",
+  });
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

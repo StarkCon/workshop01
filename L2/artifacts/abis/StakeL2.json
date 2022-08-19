@@ -1,0 +1,60 @@
+[
+    {
+        "inputs": [
+            {
+                "name": "admin_address_",
+                "type": "felt"
+            }
+        ],
+        "name": "constructor",
+        "outputs": [],
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "name": "user_l1_address_",
+                "type": "felt"
+            }
+        ],
+        "name": "get_balance",
+        "outputs": [
+            {
+                "name": "balance",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "from_address",
+                "type": "felt"
+            },
+            {
+                "name": "user_l1_address_",
+                "type": "felt"
+            },
+            {
+                "name": "amount_",
+                "type": "felt"
+            }
+        ],
+        "name": "deposit",
+        "outputs": [],
+        "type": "l1_handler"
+    },
+    {
+        "inputs": [
+            {
+                "name": "stake_l1_address_",
+                "type": "felt"
+            }
+        ],
+        "name": "set_stake_l1_address",
+        "outputs": [],
+        "type": "function"
+    }
+]
