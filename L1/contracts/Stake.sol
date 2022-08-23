@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.14;
 
 import "./IStarknetCore.sol";
@@ -35,7 +36,6 @@ contract Stake {
         uint256 stakeL2Address_
     ) {
         require(address(starknetCore_) != address(0));
-        require(isValidFelt(stakeL2Address_));
 
         starknetCore = starknetCore_;
         stakeL2Address = stakeL2Address_;
@@ -50,7 +50,6 @@ contract Stake {
         external
         payable
     {
-        require(msg.value > 100000000000000, "Deposit failed: minimum stake value is 0.001 ETH");
 
         uint256 senderAsUint256 = uint256(uint160(msg.sender));
 

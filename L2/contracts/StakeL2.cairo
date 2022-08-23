@@ -66,7 +66,8 @@ func deposit{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr}(
     let (l1_address) = stake_l1_address.read()
     assert from_address = l1_address
 
-    user_balance.write(user_l1_address=user_l1_address_, value=amount_)
+    let (current_balance) = user_balance.read(user_l1_address_)
+    user_balance.write(user_l1_address=user_l1_address_, value=current_balance + amount_)
 
     return ()
 end
